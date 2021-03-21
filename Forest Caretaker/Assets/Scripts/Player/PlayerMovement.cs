@@ -11,11 +11,14 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 velocity;
     public float gravity = -9.81f;
+    public float jumpSpeed = 6f;
 
     public Transform groundCheck;
     public LayerMask groundMask;
     public float groundDistance;
     private bool grounded;
+
+    public Animator axeAnimator;
 
     private void Update()
     {
@@ -30,8 +33,24 @@ public class PlayerMovement : MonoBehaviour
 
         movement = transform.right * x + transform.forward * z;
         velocity.y += gravity * Time.deltaTime;
-
-        playerController.Move(movement * speed * Time.deltaTime);
         playerController.Move(velocity * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.LeftShift) && movement != Vector3.zero)
+        {
+            playerController.Move(movement * speed * 3 * Time.deltaTime);
+            axeAnimator.SetFloat("movingSpeed", 2f);
+            axeAnimator.SetBool("moving", true);
+        }
+        else if (!Input.GetKey(KeyCode.LeftShift) && movement != Vector3.zero)
+        {
+            playerController.Move(movement * speed * Time.deltaTime);
+            axeAnimator.SetFloat("movingSpeed", 1f);
+            axeAnimator.SetBool("moving", true);
+        }
+
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Mouse ScrollWheel") != 0f) && grounded)
+        {
+            velocity.y = jumpSpeed;
+        }
     }
 }
