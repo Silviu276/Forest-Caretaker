@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &6239399667988421881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 603483543185347089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11f05d04e8c902f468883e39e5afaa88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  treeBody: {fileID: 330152768}
-  trunkMeshC: {fileID: 3271899099124755747}
-  trunkBoxC: {fileID: 1610251445}
 --- !u!54 &330152768
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -32,6 +16,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6239399667988421881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603483543185347089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f05d04e8c902f468883e39e5afaa88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  treeBody: {fileID: 330152768}
+  trunkMeshC: {fileID: 3271899099124755747}
+  trunkCapsuleC: {fileID: 2236920323486992547}
+  trunkBoxC: {fileID: 1109764112434054882}
+--- !u!65 &1109764112434054882
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135367825573075737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 2, y: 1, z: 2}
+  m_Center: {x: 0, y: 5.6, z: 0}
+--- !u!136 &2236920323486992547
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135367825573075737}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 1
+  m_Height: 6.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 3, z: 0}
 --- !u!64 &3271899099124755747
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46,19 +74,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5668788170693331272, guid: 4ef6bde50aff3f14ba9c265678ffce15, type: 3}
---- !u!65 &1610251445
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2135367825573075737}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1.9985962, y: 6.089059, z: 1.2994995}
-  m_Center: {x: 0.104400635, y: 3.0688834, z: 0.06607056}
 --- !u!1001 &333663039219199808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79,7 +94,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 4ef6bde50aff3f14ba9c265678ffce15,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.602591
+      value: 16.60259
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4ef6bde50aff3f14ba9c265678ffce15,
         type: 3}
@@ -139,7 +154,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4ef6bde50aff3f14ba9c265678ffce15,
         type: 3}
       propertyPath: m_Name
-      value: Tree1 Variant Variant
+      value: Tree1 Prefab
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4ef6bde50aff3f14ba9c265678ffce15,
         type: 3}
@@ -150,6 +165,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5155288612038275026, guid: 4ef6bde50aff3f14ba9c265678ffce15,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5983448980409456807, guid: 4ef6bde50aff3f14ba9c265678ffce15,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.099044
       objectReference: {fileID: 0}
     - target: {fileID: 7032823420476312315, guid: 4ef6bde50aff3f14ba9c265678ffce15,
         type: 3}

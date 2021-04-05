@@ -1,19 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponUse : MonoBehaviour
 {
     public Animator weaponAnimator;
-    private bool leftClick = false;
+    public static bool leftClick = false;
+    public static RaycastHit weaponRayHit;
     private TreeScript selectedTree;
-    public float axeDamage = 20f;
-    private RaycastHit weaponRayHit;
-    public static int mustHit;
+
+    public Text healthText; // from tree stats canvas
+    public Image healthAmount;
+    public GameObject healthBar;
+
+    public Image sleepDark; // canvas elements when sleeping
+    public Text dayNumber;
 
     private void Start()
     {
-        mustHit = 0;
+        
     }
 
     private void Update()
@@ -23,29 +29,76 @@ public class WeaponUse : MonoBehaviour
 
     private void EnvironmentInteraction()
     {
-        Physics.Raycast(transform.position, transform.forward, out weaponRayHit, 1.8f);
-        Debug.DrawRay(transform.position, transform.forward * 1.8f, Color.red);
+        Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out weaponRayHit, 1.8f); // raycasts in front of player
         leftClick = Input.GetMouseButton(0);
 
-        if (leftClick && !weaponAnimator.GetBool("chopping"))
+        if (leftClick && !weaponAnimator.GetBool("chopping")) // starts chopping
         {
             weaponAnimator.SetBool("chopping", true);
-            mustHit = 1;
         }
 
-        if (weaponRayHit.collider != null)
+        if (weaponRayHit.collider != null) // ray hit something
         {
-            if (weaponRayHit.collider.tag == "Tree" && mustHit == 1)
+            switch(weaponRayHit.collider.tag)
             {
-                selectedTree = weaponRayHit.collider.GetComponentInParent<TreeScript>();
-                DamageTree(selectedTree);
+                case "Tree":
+                    selectedTree = weaponRayHit.collider.gameObject.GetComponentInParent<TreeScript>(); // stores the hit tree
+                    healthBar.SetActive(true); // shows its health
+                    healthText.text = selectedTree.health.ToString();
+                    healthAmount.fillAmount = selectedTree.health / 100f;
+                    break;
             }
+
+            switch(weaponRayHit.collider.name)
+            {
+                case "Door":
+                    OpenDoor(weaponRayHit.collider.gameObject);
+                    break;
+                case "Bed":
+                    Sleep();
+                    break;
+                case "Fireplace":
+                    Debug.Log("Fireplace");
+                    break;
+            }
+        }
+        else
+        {
+            healthBar.SetActive(false); 
         }
     }
 
-    private void DamageTree(TreeScript tree)
+    private void OpenDoor(GameObject door)
     {
-        tree.health -= axeDamage;
-        tree.Dead();
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            int openDoor;
+            if (transform.position.z - door.transform.position.z > 0f)
+                openDoor = 2;
+            else openDoor = 1;
+            door.GetComponent<Animator>().SetInteger("isOpened", openDoor);
+        }
+    }
+
+    private void Sleep()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            dayNumber.text = $"Day {GameManager.days}";
+            sleepDark.gameObject.SetActive(true);
+            dayNumber.gameObject.SetActive(true);
+            sleepDark.canvasRenderer.SetAlpha(0f);
+            dayNumber.canvasRenderer.SetAlpha(0f);
+            sleepDark.CrossFadeAlpha(1f, 1f, true);
+            dayNumber.CrossFadeAlpha(1f, 1f, true);
+            StartCoroutine(EndSleep());
+        }
+    }
+
+    private IEnumerator EndSleep()
+    {
+        yield return new WaitForSeconds(3f);
+        sleepDark.CrossFadeAlpha(0f, 1f, true);
+        dayNumber.CrossFadeAlpha(0f, 1f, true);
     }
 }
