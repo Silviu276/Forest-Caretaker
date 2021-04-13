@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a53b6a2dc4eb795469ae9d841cb73eac
+guid: 246f28f29928b8244a44b7867d47349a
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -7,23 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: cca4380acb43d4a4790ebad294e512f5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.002
-    second: {fileID: 2100000, guid: cb3ad657a1963b146ae1d03362cd8a77, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.003
-    second: {fileID: 2100000, guid: 5b447560afd71704b99d0f24e4e49591, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.004
-    second: {fileID: 2100000, guid: 7772665001c5d4749961fde0ad1169e5, type: 2}
+      name: Sapling
+    second: {fileID: 2100000, guid: 2625f244c176ea54dab082b2b0806cac, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

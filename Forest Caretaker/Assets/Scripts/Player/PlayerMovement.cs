@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private bool grounded;
 
     public Animator axeAnimator;
+    public Animator waterCanAnimator;
 
     private void Update()
     {
@@ -38,19 +39,25 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && movement != Vector3.zero) // sprinting
         {
             playerController.Move(movement * speed * 3 * Time.deltaTime);
-            axeAnimator.SetFloat("movingSpeed", 2f);
-            axeAnimator.SetBool("moving", true);
+            SetAnimatorMovingParameters(axeAnimator, 2f);
+            SetAnimatorMovingParameters(waterCanAnimator, 2f);
         }
         else if (!Input.GetKey(KeyCode.LeftShift) && movement != Vector3.zero) // walking
         {
             playerController.Move(movement * speed * Time.deltaTime);
-            axeAnimator.SetFloat("movingSpeed", 1f);
-            axeAnimator.SetBool("moving", true);
+            SetAnimatorMovingParameters(axeAnimator, 1f);
+            SetAnimatorMovingParameters(waterCanAnimator, 1f);
         }
 
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Mouse ScrollWheel") != 0f) && grounded) // jump
         {
             velocity.y = jumpSpeed;
         }
+    }
+
+    private void SetAnimatorMovingParameters(Animator animator, float movingSpeed)
+    {
+        animator.SetFloat("movingSpeed", movingSpeed);
+        animator.SetBool("moving", true);
     }
 }

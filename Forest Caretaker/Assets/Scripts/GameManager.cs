@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class GameManager : MonoBehaviour
     public float maxTerrainHeight = 70f; // highest y point of the terrain
     private LayerMask groundMask;
 
-    private float dayTime = 0f;
-    public Transform sunTransform, moonTransform;
+    public static float dayTime = 0f;
+    [SerializeField] private Transform sunTransform, moonTransform;
+    public static Transform SunTransform, MoonTransform;
     private bool isDay = true;
 
     [SerializeField] private float axeChopDamage = 20f;
@@ -24,9 +26,13 @@ public class GameManager : MonoBehaviour
     public bool test;
     public float dayFactor;
     public static int days = 0;
+    public static int gameMode = 0; // 0 - normal ; 1 - plant mode
+    public Text gamemodeText;
 
     private void Awake()
     {
+        SunTransform = sunTransform;
+        MoonTransform = moonTransform;
         AxeChopDamage = axeChopDamage;
         Player = player;
     }
@@ -35,9 +41,7 @@ public class GameManager : MonoBehaviour
     {
         groundMask = LayerMask.GetMask("Ground");
         if (test)
-        {
             TreeInitializing();
-        }
         StartDay();
     }
 
@@ -45,6 +49,17 @@ public class GameManager : MonoBehaviour
     {
         ChangeMouseLockState();
         TimeProgression();
+        ChangeGameMode();
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            dayFactor += 0.1f;
+            Debug.Log(dayFactor);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            dayFactor -= 0.05f;
+            Debug.Log(dayFactor);
+        }
     }
 
     // initializes random trees all around the map
@@ -84,22 +99,22 @@ public class GameManager : MonoBehaviour
         float moonAngle = sunAngle + 180f; // updates moon angle on the other side of sun
 
         // updates sun and moon rotations
-        sunTransform.rotation = Quaternion.Euler(sunAngle, 0f, 0f);
-        moonTransform.rotation = Quaternion.Euler(moonAngle, 0f, 0f);
+        SunTransform.rotation = Quaternion.Euler(sunAngle, 0f, 0f);
+        MoonTransform.rotation = Quaternion.Euler(moonAngle, 0f, 0f);
     }
 
     private void StartNight()
     {
-        sunTransform.GetComponent<Light>().enabled = false;
-        moonTransform.GetComponent<Light>().enabled = true;
+        SunTransform.GetComponent<Light>().enabled = false;
+        MoonTransform.GetComponent<Light>().enabled = true;
     }
 
-    private void StartDay()
+    public static void StartDay()
     {
-        sunTransform.GetComponent<Light>().enabled = true;
-        moonTransform.GetComponent<Light>().enabled = false;
+        SunTransform.GetComponent<Light>().enabled = true;
+        MoonTransform.GetComponent<Light>().enabled = false;
         days++;
-        Debug.Log(days);
+        TreesManager.TreesDailyUpdate();
     }
 
     private void ChangeMouseLockState()
@@ -110,6 +125,23 @@ public class GameManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
             else
                 Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    private void ChangeGameMode()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (gameMode == 0)
+            {
+                gameMode = 1;
+                gamemodeText.gameObject.SetActive(true);
+            }
+            else if (gameMode == 1)
+            {
+                gameMode = 0;
+                gamemodeText.gameObject.SetActive(false);
+            }
         }
     }
 }
