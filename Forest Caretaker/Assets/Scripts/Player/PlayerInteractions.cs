@@ -139,4 +139,10 @@ public class PlayerInteractions : MonoBehaviour
         tools[3] = Camera.main.transform.Find("Shears").gameObject;
         tools[4] = Camera.main.transform.Find("Saplings").gameObject;
     }
+
+    public static void PlayerMovementsToggle(bool newStatus)
+    {
+        Camera.main.GetComponentInParent<PlayerMovement>().enabled = newStatus;
+        Camera.main.GetComponent<PlayerLook>().enabled = newStatus;
+    }
 }

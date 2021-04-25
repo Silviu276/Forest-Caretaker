@@ -11,6 +11,8 @@ public class TreeScript : MonoBehaviour
     public CapsuleCollider trunkCapsuleC;
     public BoxCollider trunkBoxC;
     private Vector3 treeFallDirection;
+    private int healthChange = 0;
+    public bool watered = false, sheared = false;
 
     private void Start()
     {
@@ -45,10 +47,9 @@ public class TreeScript : MonoBehaviour
 
     public void TreeDailyStatsUpdate()
     {
+        HealthChange();
         daysAge++;
         Adult();
-        if (health > 10f)
-            health -= 10f;
     }
 
     private void Adult()
@@ -59,5 +60,25 @@ public class TreeScript : MonoBehaviour
             transform.Find("Leaves").gameObject.SetActive(true);
             transform.Find("Sapling").gameObject.SetActive(false);
         }
+    }
+
+    private void HealthChange()
+    {
+        // positive
+        healthChange = 0;
+        if (watered)
+            healthChange += (20 / Mathf.Clamp(daysAge, 1, 5));
+        if (sheared)
+            healthChange += (20 / Mathf.Clamp(daysAge, 1, 5));
+
+        // negative
+        if (!watered && !sheared)
+            healthChange -= (30 / Mathf.Clamp(daysAge, 1, 5));
+
+        // aplies health change
+        health += healthChange;
+        health = Mathf.Clamp(health, 10, 100);
+
+        watered = sheared = false;
     }
 }

@@ -14,20 +14,47 @@ public class PlayerMovement : MonoBehaviour
     public float jumpSpeed = 6f;
 
     public Transform groundCheck;
-    public LayerMask groundMask;
+    private LayerMask groundMask;
     public float groundDistance;
     private bool grounded;
 
-    public Animator axeAnimator;
-    public Animator waterCanAnimator;
+    private Animator activatedAnimator;
+    private Animator[] toolsAnimators = new Animator[4];
 
+    // start
+    private void Start()
+    {
+        ToolsAnimatorsInit();
+        groundMask = LayerMask.GetMask("Ground");
+    }
+
+    // update
     private void Update()
+    {
+        MovePlayer();
+    }
+
+    private void SetAnimatorMovingSpeed(float movingSpeed)
+    {
+        foreach (Animator toolAnimator in toolsAnimators)
+            if (toolAnimator.isActiveAndEnabled)
+            {
+                activatedAnimator = toolAnimator;
+                break;
+            }
+        if (activatedAnimator != null)
+        {
+            activatedAnimator.SetFloat("movingSpeed", movingSpeed);
+            activatedAnimator.SetBool("moving", true);
+        }
+    }
+
+    // does all player movement and sets movement animations
+    private void MovePlayer()
     {
         grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if (grounded && velocity.y < 0f) // player is grounded
-        {
             velocity.y = -2f; // reset physics movement
-        }
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
@@ -39,25 +66,23 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && movement != Vector3.zero) // sprinting
         {
             playerController.Move(movement * speed * 3 * Time.deltaTime);
-            SetAnimatorMovingParameters(axeAnimator, 2f);
-            SetAnimatorMovingParameters(waterCanAnimator, 2f);
+            SetAnimatorMovingSpeed(2f);
         }
         else if (!Input.GetKey(KeyCode.LeftShift) && movement != Vector3.zero) // walking
         {
             playerController.Move(movement * speed * Time.deltaTime);
-            SetAnimatorMovingParameters(axeAnimator, 1f);
-            SetAnimatorMovingParameters(waterCanAnimator, 1f);
+            SetAnimatorMovingSpeed(1f);
         }
 
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetAxis("Mouse ScrollWheel") != 0f) && grounded) // jump
-        {
             velocity.y = jumpSpeed;
-        }
     }
 
-    private void SetAnimatorMovingParameters(Animator animator, float movingSpeed)
+    private void ToolsAnimatorsInit()
     {
-        animator.SetFloat("movingSpeed", movingSpeed);
-        animator.SetBool("moving", true);
+        toolsAnimators[0] = Camera.main.transform.Find("Axe").GetComponent<Animator>();
+        toolsAnimators[1] = Camera.main.transform.Find("WaterCan").GetComponent<Animator>();
+        toolsAnimators[2] = Camera.main.transform.Find("Shears").GetComponent<Animator>();
+        toolsAnimators[3] = Camera.main.transform.Find("Saplings").GetComponent<Animator>();
     }
 }

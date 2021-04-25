@@ -27,11 +27,14 @@ public class AxeScript : MonoBehaviour
         Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out axeRayHit, 1.8f); // raycasts in front of player
         leftClick = Input.GetMouseButton(0);
 
-        if (leftClick && !axeAnimator.GetBool("chopping") && GameManager.gameMode == 0) // starts chopping
+        if (GameManager.gameMode == 0 && leftClick && !axeAnimator.GetBool("chopping")) // starts chopping
+        {
             axeAnimator.SetBool("chopping", true);
+            PlayerInteractions.PlayerMovementsToggle(false);
+        }
     }
 
-    public void DamageTree()
+    public void DamageTree() // animator event
     {
         if (axeRayHit.collider != null) // player ray hit something
         {
@@ -39,6 +42,7 @@ public class AxeScript : MonoBehaviour
             {
                 TreeScript selectedTree = axeRayHit.collider.GetComponentInParent<TreeScript>(); // stores the hit tree
                 selectedTree.health -= axeChopDamage; // decreases its health
+                selectedTree.health = Mathf.Clamp(selectedTree.health, 0, 100);
                 selectedTree.Dead(); // verifies if it is dead
             }
         }

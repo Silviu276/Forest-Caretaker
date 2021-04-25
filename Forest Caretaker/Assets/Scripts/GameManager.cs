@@ -52,13 +52,11 @@ public class GameManager : MonoBehaviour
         ChangeGameMode();
         if (Input.GetKeyDown(KeyCode.P))
         {
-            dayFactor += 0.1f;
-            Debug.Log(dayFactor);
+            dayFactor = 10f;
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            dayFactor -= 0.05f;
-            Debug.Log(dayFactor);
+            dayFactor = 0.1f;
         }
     }
 
